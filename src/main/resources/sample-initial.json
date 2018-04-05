@@ -1,0 +1,78 @@
+{
+  "graph": {
+    "components": [
+      {
+        "id": "A",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "depends_on": [
+          "B", "C"
+        ],
+        "dependency_of": [
+          "B", "C"
+        ]
+      },
+      {
+        "id": "B",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "depends_on": [
+          "A", "D"
+        ],
+        "dependency_of": [
+          "A", "D"
+        ]
+      },
+      {
+        "id": "C",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "depends_on": [
+          "A", "D"
+        ],
+        "dependency_of": [
+          "A", "D"
+        ]
+      },
+      {
+        "id": "D",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "depends_on": [
+          "B", "C", "D2"
+        ],
+        "dependency_of": [
+          "B", "C"
+        ]
+      },
+      {
+        "id": "D2",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "dependency_of": [
+          "D"
+        ]
+      }
+    ]
+  }
+}
