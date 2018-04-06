@@ -29,7 +29,7 @@ public class FileEventsWrapperLoader implements EventsWrapperLoader {
         try {
             eventsWrapper = mapper.readValue(new File(filePath), EventsWrapper.class);
         } catch (IOException e) {
-            throw new CannotLoadEventsWrapperException("IOException, cannot read file: " + filePath);
+            throw new CannotLoadEventsWrapperException("IOException, cannot read file: " + filePath + ", make sure you give a valid json file path.");
         }
         return eventsWrapper;
     }

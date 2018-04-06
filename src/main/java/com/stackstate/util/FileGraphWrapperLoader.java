@@ -25,7 +25,7 @@ public class FileGraphWrapperLoader implements GraphWrapperLoader {
         try {
             graphWrapper = mapper.readValue(new File(filePath), GraphWrapper.class);
         } catch (IOException e) {
-            throw new CannotLoadGraphWrapperException("IOException, cannot read file: " + filePath);
+            throw new CannotLoadGraphWrapperException("IOException, cannot read file: " + filePath + ", make sure you give a valid json file path.");
         }
         return graphWrapper;
     }
