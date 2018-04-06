@@ -21,24 +21,20 @@ public class Main {
 
     public static void main(String[] args) throws CannotLoadGraphWrapperException, CannotLoadEventsWrapperException, IOException {
 
-        GraphWrapperLoader fileGraphWrapperReader = new FileGraphWrapperLoader("/Users/akifbarbak/IdeaProjects/stackstate/src/main/resources/sample-initial.json");
+        GraphWrapperLoader fileGraphWrapperReader = new FileGraphWrapperLoader(args[0]);
         GraphWrapper graphWrapper = fileGraphWrapperReader.loadGraphWrapper();
 
-        EventsWrapperLoader eventsWrapperLoader = new FileEventsWrapperLoader("/Users/akifbarbak/IdeaProjects/stackstate/src/main/resources/sample-events.json");
+        EventsWrapperLoader eventsWrapperLoader = new FileEventsWrapperLoader(args[1]);
         EventsWrapper eventsWrapper = eventsWrapperLoader.loadEventsWrapper();
 
         GraphManager graphManager = new GraphManager(graphWrapper.getGraph());
 
-        long l = System.currentTimeMillis();
         eventsWrapper.getEvents().forEach(event -> {
             graphManager.handleEvent(event);
         });
-        //System.out.println(System.currentTimeMillis() - l);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(graphWrapper));
-
-        System.out.println("done");
     }
 }
