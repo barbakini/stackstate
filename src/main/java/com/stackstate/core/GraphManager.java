@@ -30,29 +30,11 @@ public class GraphManager {
         graph.getComponents().forEach(component -> {
             componentMap.put(component.getId(), component);
         });
-        graph.getComponents().forEach(component -> {
-            if (component.getDependency_of() != null) {
-                dependantsMap.put(component.getId(), new HashSet<>(component.getDependency_of()));
-                Set<String> workedComponents = new HashSet<>();
-                Stack<String> componentsNeedWork = new Stack<>();
-                componentsNeedWork.addAll(component.getDependency_of());
-                while (!componentsNeedWork.isEmpty()) {
-                    String componentId = componentsNeedWork.pop();
-                    if (workedComponents.contains(componentId))
-                        continue;
+        initDependantsMap();
+        initDependsMap();
+    }
 
-                    Component dependantComp = componentMap.get(componentId);
-                    if (dependantComp.getDependency_of() != null) {
-                        dependantComp.getDependency_of().forEach(compId -> {
-                            dependantsMap.get(component.getId()).add(compId);
-                            componentsNeedWork.add(compId);
-                        });
-                    }
-                    workedComponents.add(componentId);
-                }
-                dependantsMap.get(component.getId()).remove(component.getId());
-            }
-        });
+    private void initDependsMap() {
         graph.getComponents().forEach(component -> {
             if (component.getDepends_on() != null) {
                 dependsMap.put(component.getId(), new HashSet<>(component.getDepends_on()));
@@ -78,6 +60,32 @@ public class GraphManager {
         });
     }
 
+    private void initDependantsMap() {
+        graph.getComponents().forEach(component -> {
+            if (component.getDependency_of() != null) {
+                dependantsMap.put(component.getId(), new HashSet<>(component.getDependency_of()));
+                Set<String> workedComponents = new HashSet<>();
+                Stack<String> componentsNeedWork = new Stack<>();
+                componentsNeedWork.addAll(component.getDependency_of());
+                while (!componentsNeedWork.isEmpty()) {
+                    String componentId = componentsNeedWork.pop();
+                    if (workedComponents.contains(componentId))
+                        continue;
+
+                    Component dependantComp = componentMap.get(componentId);
+                    if (dependantComp.getDependency_of() != null) {
+                        dependantComp.getDependency_of().forEach(compId -> {
+                            dependantsMap.get(component.getId()).add(compId);
+                            componentsNeedWork.add(compId);
+                        });
+                    }
+                    workedComponents.add(componentId);
+                }
+                dependantsMap.get(component.getId()).remove(component.getId());
+            }
+        });
+    }
+
     public Graph getGraph() {
         return graph;
     }
@@ -92,6 +100,7 @@ public class GraphManager {
             updateDerivedStateOf(component.getId());
             updateDerivedStateOfDependants(component.getId());
         }
+        lastHandledEventsTimestamps.put(event.getComponent() + event.getCheck_state(), event.getTimestamp());
     }
 
     private void updateDerivedStateOf(String componentId) {
@@ -107,9 +116,10 @@ public class GraphManager {
     }
 
     private void updateDerivedStateOfDependants(String componentId) {
-        dependantsMap.get(componentId).forEach(compId -> {
-            updateDerivedStateOf(compId);
-        });
+        if (dependantsMap.get(componentId) != null)
+            dependantsMap.get(componentId).forEach(compId -> {
+                updateDerivedStateOf(compId);
+            });
     }
 
 
