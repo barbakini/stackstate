@@ -13,6 +13,8 @@ To run the application you can use `run.sh` file. You can simply give initial-gr
 
  `./run.sh initial-graph.json events.json`
  
+ You can find example json files under [src/main/resources](https://github.com/barbakini/stackstate/tree/master/src/main/resources) and [src/test/resources](https://github.com/barbakini/stackstate/tree/master/src/test/resources)
+ 
  
  ###contact
  You can find the project on [github](https://github.com/barbakini/stackstate) and contact me if you have any questions via [barbakakif@gmail.com](mailto:barbakakif@gmail.com)
